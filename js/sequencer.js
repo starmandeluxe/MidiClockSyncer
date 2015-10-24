@@ -72,7 +72,11 @@ window.addEventListener('load', function() {
     createBPMOptions(document.getElementById("bpm"));
     document.getElementById("bpm").value = 128;
     document.getElementById("bpm").onchange = changeBPM;
-    $('#bpm').iPhonePicker({ width: '60px', imgRoot: 'images/' });
+    $('#bpm').iPhonePicker({ width: '220px', imgRoot: 'images/' });
+    //remove focus from Play button
+    $('#play').focus(function() {
+        this.blur();
+    });
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 });
 
@@ -154,13 +158,14 @@ function play() {
     if (isPlaying) {
         //toggle icon to arrow
         $('#play').html("<i class=\"fa fa-play\"></i>");
-        $('#status').text("Status: Stopped");
+        $('#status').text("Stopped");
         isPlaying = false;
         stop();
     }
     else {
         playPressed = true;
         isPlaying = true;
+        $('#status').text("Playing...");
         //toggle icon to square
         $('#play').html("<i class=\"fa fa-stop\"></i>");
         nextClockTime = 0;
