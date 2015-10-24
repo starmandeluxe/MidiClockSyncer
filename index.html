@@ -2,33 +2,41 @@
 <html>
 
 <head>
-    <title>Clock Sequencer</title>
+    <title>MIDI Clock Syncer</title>
     <meta http-equiv="Cache-control" content="no-cache" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap core CSS -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/footer.css" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.iphonepicker.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.iphonepicker.js"></script>
     <script type="text/javascript" src="js/sequencer.js"></script>
 </head>
 
 <body>
     <div class="container-fluid clock">
-        <h1>Clock Sequencer</h1>
+        <h1>MIDI Clock Syncer</h1>
+        <div class="row">
+            <div class="col-xs-3 col-md-1">
+                <button id="play" type="button" onclick="play()" class="btn btn-lg btn-success"><i class="fa fa-play"></i></button>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-xs-3">
-                <h4>Midi Device:</h4>
+                <h4>Midi Device</h4>
             </div>
             <div class="col-xs-3">
-                <h4>BPM:</h4>
+                <h4>BPM</h4>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-3">
-                <select id="midiOut">
+                <select id="midiOut" class="selectpicker">
                     <option value="">Not connected</option>
                 </select>
             </div>
@@ -38,18 +46,9 @@
             </div>
         </div>
         <br>
-        <div class="row">
-            <div class="col-xs-3">
-                <button type="button" onclick="play()" class="btn btn-success">Play</button>
-                
-            </div>
-            <div class="col-xs-3">
-                <button type="button" onclick="stop()" class="btn btn-danger">Stop</button>
-            </div>
-        </div>
     </div>
     <footer class="page-row">
-        <p class="text-muted credit">Site created by <a href="http://www.alexkort.com">Alex Kort</a>.</p>
+        <p class="text-muted credit" style="float: right;">Copyright © <script>document.write(new Date().getFullYear())</script> by <a href="http://www.alexkort.com">Alex Kort</a>. All Rights Reserved.</p>
     </footer>
 </body>
 
