@@ -61,9 +61,34 @@ var notes = {
 
 var note1 = notes['C4'];
 
-
 //Actions to perform on load
 window.addEventListener('load', function() {
+    
+    //Prevent swipe down to refresh in Android Chrome 
+    var lastTouchY = 0;
+    var touchstartHandler = function(e) {
+    if (e.touches.length != 1) return;
+    lastTouchY = e.touches[0].clientY;
+    maybePreventPullToRefresh =
+        preventPullToRefreshCheckbox.checked &&
+        window.pageYOffset == 0;
+    }
+
+    var touchmoveHandler = function(e) {
+        var touchY = e.touches[0].clientY;
+        var touchYDelta = touchY - lastTouchY;
+        lastTouchY = touchY;
+
+        if (touchYDelta > 0) {
+            e.preventDefault();
+            return;
+        }
+    }
+
+    document.addEventListener('touchstart', touchstartHandler, false);
+    document.addEventListener('touchmove', touchmoveHandler, false);
+
+
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();
     //skin the midi device select dropdown
