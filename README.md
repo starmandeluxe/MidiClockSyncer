@@ -11,6 +11,5 @@ This is a sample project to demonstrate the Web Midi API's MIDI OUT functionalit
 4. Press the Stop button to stop the MIDI Clock from sending output signals. 
 
 #Issues
-- Currently the timing is using Javascript's SetInterval, which is a bad practice for precise timing if any outside processing happens on the main thread. I need to refactor this solution to use the Web Audio Clock along with the Javascript timer to schedule events.
-- Changing browser windows stops the Midi clock. This could be caused by the Javascript timer thread being suspended when focus is lost.
+- Changing browser window to a new tab stops the Midi clock. It is recommended to run this page in a separate window.
 
