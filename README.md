@@ -1,6 +1,8 @@
 # Web Midi Clock Syncer
 A simple clock output sequencer for Web Midi API
 
+http://www.alexkort.com/MidiClockSync/
+
 #Synopsis
 This is a sample project to demonstrate the Web Midi API's MIDI OUT functionality. It will detect MIDI devices connected via USB (or internal MIDI devices) and output a clock based on a set BPM (Beats Per Minute). Tested on Google Chrome 46.0.2490.71 m and Chrome for Android 6.0 via USB OTG.
 
