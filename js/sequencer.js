@@ -6,11 +6,13 @@ var tempo;
 var scheduler;
 var lookahead = 25.0; //How frequently to call scheduling function (ms)
 var scheduleAheadTime = 0.1;    //How far ahead to schedule audio (sec)
+var nextClockTime = 0.0;
 var startTime = 0;
 var playPressed = false;
 var isPlaying = false;
 var beatCounter = 0;
 var beatDivider = 24;
+var timerID=null;
 var timerWorker = null;     // The Web Worker used to fire timer messages
 var cc = [0x08]; //cc value for Doepfer A-190-2 Midi Interface sync
 
@@ -95,8 +97,6 @@ function onMIDISuccess(midi) {
     if (!deviceFound) {
         document.getElementById("midiOut").appendChild(new Option("No Device Available", 0, false, false));
     }
-
-    console.log('Output ', output);
 }
 
 //If request MIDI access failed, log message
@@ -142,14 +142,14 @@ function play() {
         stop();
     }
     else {
-        playPressed = true;
-        isPlaying = true;
-        $('#status').text("Playing...");
+        startTime = audioContext.currentTime + 0.005;
+        nextClockTime = startTime;
+        tempo = 60 / bpm / 24;
         //toggle icon to square
         $('#play').html("<i class=\"fa fa-stop\"></i>");
-        nextClockTime = 0;
-        tempo = 60 / bpm / 24;
-        startTime = audioContext.currentTime + 0.005;
+        $('#status').text("Playing...");
+        playPressed = true;
+        isPlaying = true;
         scheduleClock();
     }
 }
@@ -167,15 +167,15 @@ function scheduleClock() {
 
     while (nextClockTime < currentTime + scheduleAheadTime) {
          if (playPressed) {
-               setTimeout(function() {
+            setTimeout(function() {
                 //send midi clock start only the first beat! 
                 //timeout needed to avoid quick first pulse
                 playPressed = false;
                 midiDevice.send([0xFA]);
                 midiDevice.send([0xF8]);
                 //Send C0 for Doepfer A-190-2 Midi Interface Learn
-                midiDevice.send([0x90, 12, 0x40]);
-                midiDevice.send([0x80, 12, 0x40]);
+                //midiDevice.send([0x90, 12, 0x40]);
+                //midiDevice.send([0x80, 12, 0x40]);
             }, currentTime + nextClockTime);
          }
         advanceClock();
@@ -188,11 +188,11 @@ function advanceClock() {
     //send midi clock signal
     midiDevice.send([0xF8]);
     //send cc for Doepfer A-190-2 Midi Interface
-    if (beatCounter % beatDivider == 0) {     
-        midiDevice.send([0xB0, cc, 0x7F]);
-        midiDevice.send([0xB0, cc, 0x00]); 
-    }
-    beatCounter++;
+    //if (beatCounter % beatDivider == 0) {     
+        //midiDevice.send([0xB0, cc, 0x7F]);
+        //midiDevice.send([0xB0, cc, 0x00]); 
+    //}
+    //beatCounter++;
 
     //the next clock will be at the next tempo marker
     nextClockTime += tempo;
