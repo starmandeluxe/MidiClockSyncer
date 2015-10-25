@@ -4,20 +4,15 @@ var midiDevice;
 var bpm = 128;
 var tempo;
 var scheduler;
-
-var lookahead = 25.0;       // How frequently to call scheduling function 
-                            //(in milliseconds)
-var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
-                            // This is calculated from lookahead, and overlaps 
-                            // with next interval (in case the timer is late)
-var nextClockTime = 0.0;     // when the next note is due.
+var lookahead = 25.0; //How frequently to call scheduling function (ms)
+var scheduleAheadTime = 0.1;    //How far ahead to schedule audio (sec)
 var startTime = 0;
 var playPressed = false;
 var isPlaying = false;
 var beatCounter = 0;
 var beatDivider = 24;
-
-var cc = [0x08];
+var timerWorker = null;     // The Web Worker used to fire timer messages
+var cc = [0x08]; //cc value for Doepfer A-190-2 Midi Interface sync
 
 //Actions to perform on load
 window.addEventListener('load', function() {
@@ -60,6 +55,7 @@ window.addEventListener('load', function() {
     $('#play').focus(function() {
         this.blur();
     });
+
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 });
 
@@ -184,7 +180,7 @@ function scheduleClock() {
          }
         advanceClock();
     }
-    timerID = window.setTimeout("scheduleClock()", 0);
+    timerID = window.setTimeout("scheduleClock()", lookahead);
 }
 
 //move the clock forward by tempo intervals (24ppq)
