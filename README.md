@@ -12,4 +12,5 @@ This is a sample project to demonstrate the Web Midi API's MIDI OUT functionalit
 
 #Issues
 - Changing browser window to a new tab stops the Midi clock. It is recommended to run this page in a separate window.
+- Clock output is very unstable when running on Android 6.0 via USB OTG. Currently investigating the root cause.
 
